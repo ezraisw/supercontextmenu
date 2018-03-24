@@ -35,7 +35,7 @@ var options = [
   {
     icon: 'fa fa-plus',   //Icon for the option
     label: 'Add a new item',   //Label to be displayed for the option
-    action: function(contextMenuIndex, optionIndex) {...},   //The callback once clicked
+    action: function(option, contextMenuIndex, optionIndex) {...},   //The callback once clicked
     submenu: [...],   //An array of object for submenus once hovered
     disabled: false   //Disabled status of the option          
   },
