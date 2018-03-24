@@ -198,7 +198,7 @@ window.superCm = function() {
                         setActiveOptSubmenu(cmIndex, -1);
                     }
 
-                    opt.action(cmIndex, optIndex);
+                    opt.action(opt, cmIndex, optIndex);
                 });
             }
             
