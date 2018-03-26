@@ -215,7 +215,7 @@ window.superCm = function() {
 
                     showCm(opt.submenu, submenuIndex, {
                         x: cm.position.x + cm.element.outerWidth(),
-                        y: cm.position.y + this.offsetTop - parseInt(cm.element.css('padding-top'))
+                        y: cm.position.y + this.offsetTop - this.parentElement.scrollTop - parseInt(cm.element.css('padding-top'))
                     });
                 });
 
@@ -361,22 +361,26 @@ window.superCm = function() {
     function showCm(opts, cmIndex, position)
     {
         var cmElement = cmTemplate.clone();
+        cmElement.find('.context-menu-options').scroll(function() {
+            destroyCm(cmIndex + 1);
+        });
 
         if(settings.searchBar && cmIndex == 0) {
             var cmSearch = cmSearchTemplate.clone();
             cmSearch.prependTo(cmElement);
         }
-
-        cms.push({
+        
+        var cm = {
             'element': cmElement,
             'position': position,
             'opts': opts,
             'activeSubmenu': -1,
             'search': {
                 'result': null,
-                'input': cmSearch ? cmSearch : null
+                'input': cmSearch ? cmSearch.find('input') : null
             }
-        });
+        };
+        cms.push(cm);
 
         setCurrentActiveOver(-1, -1);
         activeOpt = {
@@ -389,7 +393,7 @@ window.superCm = function() {
         updateCmPosition(cmIndex);
 
         if(cmSearch) {
-            cmSearch.find('input')
+            cm.search.input
                 .on('input', function() {
                     updateSearch(cmIndex, this.value.trim());
                 })

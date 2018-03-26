@@ -10,6 +10,8 @@
 }
 
 .context-menu {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     padding: 6px 0;
     background-color: #FFFFFF;
@@ -18,18 +20,23 @@
     border-radius: 2px;
     white-space: nowrap;
     vertical-align: top;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
     user-select: none;
     animation: 0.1s context-popup;
 }
 
-.context-menu::-webkit-scrollbar {
+.context-menu-options {
+    overflow-x: hidden;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.context-menu-options::-webkit-scrollbar {
     width: 5px;
     background-color: transparent;
 }
 
-.context-menu::-webkit-scrollbar-thumb {
+.context-menu-options::-webkit-scrollbar-thumb {
     width: 5px;
     background-color: rgba(0, 144, 209, 0.5);
     border-radius: 5px;
