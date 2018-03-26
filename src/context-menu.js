@@ -277,6 +277,10 @@ window.superCm = function() {
             if(cmIndex > 0) {
                 cm.position.x -= parentCm.element.outerWidth();
             }
+
+            if(cm.position.x < $(window).scrollLeft()) {
+                cm.position.x = $(window).scrollLeft();
+            }
         }
 
         if(cm.position.y - $(window).scrollTop() + cmElementHeight >= $(window).innerHeight()) {
@@ -287,6 +291,10 @@ window.superCm = function() {
                 var lastOpt = getOptElements(cmIndex).last();
                 var paddingTop = parseInt(cm.element.css('padding-top'));
                 cm.position.y += paddingBottom + paddingTop + lastOpt.outerHeight();
+            }
+
+            if(cm.position.y < $(window).scrollTop()) {
+                cm.position.y = $(window).scrollTop();
             }
         }
 
