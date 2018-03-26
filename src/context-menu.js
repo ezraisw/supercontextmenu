@@ -109,12 +109,8 @@ window.superCm = function() {
         }
     }
 
-    function destroyCm(cmIndex)
+    function destroyCm(cmIndex = 0)
     {
-        if(typeof cmIndex === 'undefined') {
-            cmIndex = 0;
-        }
-
         if(activeOpt != null && cmIndex <= activeOpt.cmIndex) {
             setCurrentActiveOver(-1, -1);
         }
@@ -215,7 +211,7 @@ window.superCm = function() {
 
                     showCm(opt.submenu, submenuIndex, {
                         x: cm.position.x + cm.element.outerWidth(),
-                        y: cm.position.y + this.offsetTop - this.parentElement.scrollTop - parseInt(cm.element.css('padding-top'))
+                        y: cm.position.y + this.offsetTop - this.parentElement.scrollTop - parseInt(getOptContainer(cmIndex).css('padding-top'))
                     });
                 });
 
@@ -252,54 +248,57 @@ window.superCm = function() {
         }
     }
 
-    function updateCmPosition(cmIndex, parentUpdate)
+    function updateCmPosition(cmIndex, repositionX = true, repositionY = true)
     {
         var cm = cms[cmIndex];
 
         if(cmIndex > 0) {
             var parentCmIndex = cmIndex - 1;
             var parentCm = cms[parentCmIndex];
+            var activeSubmenu = getOptElement(parentCmIndex, parentCm.activeSubmenu);
 
-            if(parentUpdate) {
-                var activeSubmenu = getOptElement(parentCmIndex, parentCm.activeSubmenu);
-                
-                cm.position.x = parentCm.position.x + parentCm.element.outerWidth();
-                cm.position.y = activeSubmenu[0].offsetTop - parseInt(parentCm.element.css('padding-top'));
-            }
+            cm.position = {
+                'x': parentCm.position.x + parentCm.element.outerWidth(),
+                'y': parentCm.position.y + activeSubmenu[0].offsetTop - activeSubmenu[0].parentElement.scrollTop - parseInt(getOptContainer(cmIndex).css('padding-top'))
+            };
         }
 
-        var cmElementWidth = cm.element.outerWidth();
-        var cmElementHeight = cm.element.outerHeight();
+        if(repositionX) {
+            var cmElementWidth = cm.element.outerWidth();
+            if(cm.position.x - $(window).scrollLeft() + cmElementWidth >= $(window).innerWidth()) {
+                cm.position.x -= cmElementWidth;
 
-        if(cm.position.x - $(window).scrollLeft() + cmElementWidth >= $(window).innerWidth()) {
-            cm.position.x -= cmElementWidth;
+                if(cmIndex > 0) {
+                    cm.position.x -= parentCm.element.outerWidth();
+                }
 
-            if(cmIndex > 0) {
-                cm.position.x -= parentCm.element.outerWidth();
+                if(cm.position.x < $(window).scrollLeft()) {
+                    cm.position.x = $(window).scrollLeft();
+                }
             }
 
-            if(cm.position.x < $(window).scrollLeft()) {
-                cm.position.x = $(window).scrollLeft();
-            }
+            cm.element.css('left', `${cm.position.x}px`);
         }
 
-        if(cm.position.y - $(window).scrollTop() + cmElementHeight >= $(window).innerHeight()) {
-            cm.position.y -= cmElementHeight;
+        if(repositionY) {
+            var cmElementHeight = cm.element.outerHeight();
+            if(cm.position.y - $(window).scrollTop() + cmElementHeight >= $(window).innerHeight()) {
+                cm.position.y -= cmElementHeight;
 
-            if(cmIndex > 0) {
-                var paddingBottom = parseInt(cm.element.css('padding-bottom'));
-                var lastOpt = getOptElements(cmIndex).last();
-                var paddingTop = parseInt(cm.element.css('padding-top'));
-                cm.position.y += paddingBottom + paddingTop + lastOpt.outerHeight();
+                if(cmIndex > 0) {
+                    var paddingBottom = parseInt(getOptContainer(cmIndex).css('padding-bottom'));
+                    var lastOpt = getOptElements(cmIndex).last();
+                    var paddingTop = parseInt(getOptContainer(cmIndex).css('padding-top'));
+                    cm.position.y += paddingBottom + paddingTop + lastOpt.outerHeight();
+                }
+
+                if(cm.position.y < $(window).scrollTop()) {
+                    cm.position.y = $(window).scrollTop();
+                }
             }
 
-            if(cm.position.y < $(window).scrollTop()) {
-                cm.position.y = $(window).scrollTop();
-            }
+            cm.element.css('top', `${cm.position.y}px`);
         }
-
-        cm.element.css('left', `${cm.position.x}px`);
-        cm.element.css('top', `${cm.position.y}px`);
 
         if(settings.maxHeight === null) {
             var leftoverHeight = cm.position.y - $(window).scrollTop();
@@ -335,12 +334,14 @@ window.superCm = function() {
         });
     }
 
-    function updateSearch(cmIndex, keyword)
+    function updateSearch(cmIndex)
     {
-        destroyCm(cmIndex + 1);
-
         var cm = cms[cmIndex];
+        if(cm.search.input === null) {
+            return;
+        }
 
+        var keyword = cm.search.input.val().trim();
         if(keyword == '') {
             cm.search.result = null;
             updateCm(cmIndex);
@@ -353,17 +354,11 @@ window.superCm = function() {
         
         populateSearchResult(result, cm.opts, keyword.toLowerCase());
         cm.search.result = result;
-
-        updateCm(cmIndex);
-        updateCmPosition(cmIndex);
     }
 
-    function showCm(opts, cmIndex, position)
+    function showCm(opts, cmIndex, position = null)
     {
         var cmElement = cmTemplate.clone();
-        cmElement.find('.context-menu-options').scroll(function() {
-            destroyCm(cmIndex + 1);
-        });
 
         if(settings.searchBar && cmIndex == 0) {
             var cmSearch = cmSearchTemplate.clone();
@@ -376,11 +371,16 @@ window.superCm = function() {
             'opts': opts,
             'activeSubmenu': -1,
             'search': {
-                'result': null,
-                'input': cmSearch ? cmSearch.find('input') : null
+                'input': cmSearch ? cmSearch.find('input') : null,
+                'result': null
             }
         };
         cms.push(cm);
+
+        getOptContainer(cmIndex).scroll(function() {
+            setActiveOptSubmenu(cmIndex, -1);
+            destroyCm(cmIndex + 1);
+        });
 
         setCurrentActiveOver(-1, -1);
         activeOpt = {
@@ -388,14 +388,17 @@ window.superCm = function() {
             'optIndex': -1
         };
 
-        updateCm(cmIndex);
         cmElement.appendTo(document.body);
+        updateCm(cmIndex);
         updateCmPosition(cmIndex);
 
         if(cmSearch) {
             cm.search.input
                 .on('input', function() {
-                    updateSearch(cmIndex, this.value.trim());
+                    destroyCm(cmIndex + 1);
+                    updateSearch(cmIndex);
+                    updateCm(cmIndex);
+                    updateCmPosition(cmIndex, true, false);
                 })
                 .focus();
         }
@@ -539,11 +542,11 @@ window.superCm = function() {
         destroyMenu: function() {
             destroyCm();
         },
-        updateMenu: function() {
+        updateMenu: function(repositionX, repositionY) {
             cms.forEach(function(cm, cmIndex) {
-                updateSearch(cmIndex, cm.search.input.val());
+                updateSearch(cmIndex);
                 updateCm(cmIndex);
-                updateCmPosition(cmIndex, true);
+                updateCmPosition(cmIndex, repositionX, repositionY);
             });
         },
         getMenuOptions: function(cmIndex) {

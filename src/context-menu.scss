@@ -13,7 +13,6 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-    padding: 6px 0;
     background-color: #FFFFFF;
     box-sizing: border-box;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2), 0 0 0 1px #EEEEEE;
@@ -25,7 +24,36 @@
     animation: 0.1s context-popup;
 }
 
+.context-menu-search {
+    padding: 6px 6px;
+    border-bottom: 1px solid #EEEEEE;
+
+    > input {
+        display: block;
+        min-width: 250px;
+        width: 100%;
+        height: 30px;
+        padding: 10px 6px;
+        box-sizing: border-box;
+        border: 1px solid #EEEEEE;
+        border-radius: 2px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        font-size: 10.5pt;
+        color: #616161;
+        transition: 0.1s border-color;
+
+        &:focus {
+            border-color: #64B5F6;
+        }
+
+        @include placeholder {
+            color: #9E9E9E;
+        }
+    }
+}
+
 .context-menu-options {
+    padding: 6px 0;
     overflow-x: hidden;
     overflow-y: auto;
     flex: 1;
@@ -52,34 +80,6 @@
     font-size: 11pt;
     font-weight: 300;
     color: #616161;
-}
-
-.context-menu-search {
-    margin-bottom: 6px;
-    padding: 0 6px;
-
-    > input {
-        display: block;
-        min-width: 250px;
-        width: 100%;
-        height: 30px;
-        padding: 10px 6px;
-        box-sizing: border-box;
-        border: 1px solid #EEEEEE;
-        border-radius: 2px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        font-size: 10.5pt;
-        color: #616161;
-        transition: 0.1s border-color;
-
-        &:focus {
-            border-color: #64B5F6;
-        }
-
-        @include placeholder {
-            color: #9E9E9E;
-        }
-    }
 }
 
 .context-menu-option {
