@@ -57,9 +57,17 @@ Self-explanatory, the `label` property is the text displayed for the option.
 #### Action
 This is the callback that is called upon clicking or pressing enter on the option. The callback has three parameter:
 
-`option` the option object that is selected.
+`option` the option object that is selected. It is recommended that this is used over `superCm.getMenuOptions` to obtain the option object as `superCm.getMenuOptions` will obtain the incorrect option object while searching.
+
 `contextMenuIndex` a zero based index that specifies the selected option's context menu. Zero is the first context menu that appears upon `superCm.createMenu`.
+
 `optionIndex` a zero based index that specifies the selected option's index.
+
+```
+function(option, contextMenuIndex, optionIndex) {
+  ...
+}
+```
 
 #### Submenu
 The `submenu` property can be used to create submenus that appear upon hover. The property accepts array of objects that has the same structure as usual option object. There is no limit of submenus that can be created.
