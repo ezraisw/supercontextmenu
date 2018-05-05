@@ -1,10 +1,9 @@
-'use strict';
-
-/**
+/*!
  * Super Context Menu
- * 
  * Created by EZ17-1, pwnedgod @ github
  */
+'use strict';
+
 window.superCm = function() {
     
     var settings = {
