@@ -479,11 +479,11 @@ window.superCm = function() {
         }
     }
 
-    $(document).on('mousedown contextmenu', '.context-menu, .opt-text, .opt-icon, .opt-separator', function(e) {
+    $(document).on('mousedown.scm contextmenu.scm', '.context-menu, .opt-text, .opt-icon, .opt-separator', function(e) {
         e.stopPropagation();
     });
 
-    $(document).keydown(function(e) {
+    $(document).on('keydown.scm', function(e) {
         if(e.key == 'Escape' || e.which == 27) {
             destroyCm();
         }
@@ -524,11 +524,11 @@ window.superCm = function() {
         }
     });
 
-    $(document).mousedown(function() {
+    $(document).on('mousedown.scm', function() {
         destroyCm();
     });
 
-    $(window).on('scroll resize', function() {
+    $(window).on('scroll.scm resize.scm', function() {
         destroyCm();
     });
 
