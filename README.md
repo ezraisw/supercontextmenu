@@ -14,7 +14,7 @@ Super Context Menu requires jQuery to operate properly!
 Once included, Super Context Menu provides a superCm object that can be used to customizable context menus.
 
 ### Creating a menu
-To display the context menu on right click, you can use the `contextmenu` event handler. Inside the handler, invoke `superCm.createMenu` to create the menu as you like. 
+To display the context menu on right click, you can use the `contextmenu` event handler. Inside the handler, invoke `superCm.createMenu` while passing the event object to create the menu as you like. 
 
 The first argument `options` is an array of object that contains the options to be put in the menu, the second argument `event` is the event object from the event handler parameter.
 
@@ -57,11 +57,11 @@ Self-explanatory, the `label` property is the text displayed for the option.
 #### Action
 This is the callback that is called upon clicking or pressing enter on the option. The callback has three parameter:
 
-`option` the option object that is selected. It is recommended that this is used over `superCm.getMenuOptions` to obtain the option object as `superCm.getMenuOptions` will obtain the incorrect option object while searching.
+`option`: the option object that is selected. It is recommended that this is used over `superCm.getMenuOptions` to obtain the option object as `superCm.getMenuOptions` will obtain the incorrect option object while searching.
 
-`contextMenuIndex` a zero based index that specifies the selected option's context menu. Zero is the first context menu that appears upon `superCm.createMenu`.
+`contextMenuIndex`: a zero based index that specifies the selected option's context menu. Zero is the first context menu that appears upon `superCm.createMenu`.
 
-`optionIndex` a zero based index that specifies the selected option's index.
+`optionIndex`: a zero based index that specifies the selected option's index.
 
 ```
 function(option, contextMenuIndex, optionIndex) {
