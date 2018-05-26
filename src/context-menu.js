@@ -288,7 +288,7 @@ window.superCm = function(msie) {
                 }
             }
 
-            cm.element.css('left', cm.position.x + 'px');
+            cm.element.css('left', cm.position.x);
         }
 
         var cmElementHeight = cm.element.outerHeight();
@@ -308,7 +308,7 @@ window.superCm = function(msie) {
                 }
             }
 
-            cm.element.css('top', cm.position.y + 'px');
+            cm.element.css('top', cm.position.y);
         }
 
         if(settings.maxHeight === null) {
