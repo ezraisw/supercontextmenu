@@ -291,8 +291,8 @@ window.superCm = function(msie) {
             cm.element.css('left', cm.position.x + 'px');
         }
 
+        var cmElementHeight = cm.element.outerHeight();
         if(repositionY) {
-            var cmElementHeight = cm.element.outerHeight();
             if(cm.position.y - $(window).scrollTop() + cmElementHeight >= $(window).innerHeight()) {
                 cm.position.y -= cmElementHeight;
 
@@ -313,16 +313,22 @@ window.superCm = function(msie) {
 
         if(settings.maxHeight === null) {
             var leftoverHeight = cm.position.y - $(window).scrollTop();
-            var cssMaxHeight = 'calc(100vh - ' + leftoverHeight + 'px)';
             if(msie) {
-                if(cm.element.outerHeight() > $(window).innerHeight() - leftoverHeight) {
-                    cm.element.css('height', cssMaxHeight);
+                let leftoverWindowHeight = $(window).innerHeight() - leftoverHeight;
+                if(cmElementHeight > leftoverWindowHeight) {
+                    cm.element.css('height', leftoverWindowHeight);
                 }
             } else {
-                cm.element.css('max-height', cssMaxHeight);
+                cm.element.css('max-height', 'calc(100vh - ' + leftoverHeight + 'px)');
             }
         } else {
-            cm.element.css('max-height', settings.maxHeight);
+            if(msie) {
+                if(cmElementHeight > settings.maxHeight) {
+                    cm.element.css('height', settings.maxHeight);
+                }
+            } else {
+                cm.element.css('max-height', settings.maxHeight);
+            }
         }
 
         if(settings.minWidth !== null) {
