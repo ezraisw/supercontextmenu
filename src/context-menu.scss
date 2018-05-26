@@ -56,21 +56,20 @@
     padding: 6px 0;
     overflow-x: hidden;
     overflow-y: auto;
-    flex: 1;
-}
 
-.context-menu-options::-webkit-scrollbar {
-    width: 5px;
-    background-color: transparent;
-}
+    &::-webkit-scrollbar {
+        width: 5px;
+        background-color: transparent;
+    }
 
-.context-menu-options::-webkit-scrollbar-thumb {
-    width: 5px;
-    background-color: rgba(0, 144, 209, 0.5);
-    border-radius: 5px;
-
-    &:hover, &:active {
-        background-color: rgba(0, 144, 209, 1);
+    &::-webkit-scrollbar-thumb {
+        width: 5px;
+        background-color: rgba(0, 144, 209, 0.5);
+        border-radius: 5px;
+    
+        &:hover, &:active {
+            background-color: rgba(0, 144, 209, 1);
+        }
     }
 }
 

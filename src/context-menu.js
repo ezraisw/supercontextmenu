@@ -4,8 +4,8 @@
  */
 'use strict';
 
-window.superCm = function() {
-    
+window.superCm = function(msie) {
+
     var settings = {
         'minWidth': null,
         'maxHeight': null,
@@ -108,8 +108,12 @@ window.superCm = function() {
         }
     }
 
-    function destroyCm(cmIndex = 0)
+    function destroyCm(cmIndex)
     {
+        if(cmIndex === undefined) {
+            cmIndex = 0;
+        }
+
         if(activeOpt != null && cmIndex <= activeOpt.cmIndex) {
             setCurrentActiveOver(-1, -1);
         }
@@ -137,12 +141,12 @@ window.superCm = function() {
         opts.forEach(function(opt, optIndex) {
             var cmOptElement = getOptElement(cmIndex, optIndex);
 
-            var separator = typeof opt.separator !== 'undefined';
-            var icon = typeof opt.icon !== 'undefined' && opt.icon;
-            var label = typeof opt.label !== 'undefined' && opt.label;
-            var disabled = typeof opt.disabled !== 'undefined' && opt.disabled;
-            var action = typeof opt.action !== 'undefined' && opt.action;
-            var submenu = typeof opt.submenu !== 'undefined' && opt.submenu;
+            var separator = opt.separator !== undefined;
+            var icon = opt.icon !== undefined && opt.icon;
+            var label = opt.label !== undefined && opt.label;
+            var disabled = opt.disabled !== undefined && opt.disabled;
+            var action = opt.action !== undefined && opt.action;
+            var submenu = opt.submenu !== undefined && opt.submenu;
 
             if(cmOptElement.length) {
                 cmOptElement.empty();
@@ -247,8 +251,16 @@ window.superCm = function() {
         }
     }
 
-    function updateCmPosition(cmIndex, repositionX = true, repositionY = true)
+    function updateCmPosition(cmIndex, repositionX, repositionY)
     {
+        if(repositionX === undefined) {
+            repositionX = true;
+        }
+
+        if(repositionY === undefined) {
+            repositionY = true;
+        }
+
         var cm = cms[cmIndex];
 
         if(cmIndex > 0) {
@@ -276,7 +288,7 @@ window.superCm = function() {
                 }
             }
 
-            cm.element.css('left', `${cm.position.x}px`);
+            cm.element.css('left', cm.position.x + 'px');
         }
 
         if(repositionY) {
@@ -296,12 +308,19 @@ window.superCm = function() {
                 }
             }
 
-            cm.element.css('top', `${cm.position.y}px`);
+            cm.element.css('top', cm.position.y + 'px');
         }
 
         if(settings.maxHeight === null) {
             var leftoverHeight = cm.position.y - $(window).scrollTop();
-            cm.element.css('max-height', `calc(100vh - ${leftoverHeight}px)`);
+            var cssMaxHeight = 'calc(100vh - ' + leftoverHeight + 'px)';
+            if(msie) {
+                if(cm.element.outerHeight() > $(window).innerHeight() - leftoverHeight) {
+                    cm.element.css('height', cssMaxHeight);
+                }
+            } else {
+                cm.element.css('max-height', cssMaxHeight);
+            }
         } else {
             cm.element.css('max-height', settings.maxHeight);
         }
@@ -318,7 +337,7 @@ window.superCm = function() {
         opts.forEach(function(opt) {
             var match = false;
 
-            if(typeof opt.label !== 'undefined' && opt.label) {
+            if(opt.label !== undefined && opt.label) {
                 var label = opt.label.toLowerCase();
 
                 if(label && label.indexOf(keyword) != -1) {
@@ -327,7 +346,7 @@ window.superCm = function() {
                 }
             } 
             
-            if(!match && typeof opt.submenu !== 'undefined' && opt.submenu.length) {
+            if(!match && opt.submenu !== undefined && opt.submenu.length) {
                 populateSearchResult(result, opt.submenu, keyword);
             }
         });
@@ -355,7 +374,7 @@ window.superCm = function() {
         cm.search.result = result;
     }
 
-    function showCm(opts, cmIndex, position = null)
+    function showCm(opts, cmIndex, position)
     {
         var cmElement = cmTemplate.clone();
 
@@ -406,7 +425,7 @@ window.superCm = function() {
     function isSelectable(cmIndex, optIndex)
     {
         var opt = getOpts(cmIndex, false)[optIndex];
-        return typeof opt.separator === 'undefined' && (typeof opt.disabled === 'undefined' || !opt.disabled);
+        return opt.separator === undefined && (opt.disabled === undefined || !opt.disabled);
     }
 
     function findSuitableSelectable(cmIndex, optIndex, reverse)
@@ -552,15 +571,15 @@ window.superCm = function() {
             return cms[cmIndex].opts;
         },
         addMenuOption: function(cmIndex, opt, optIndex) {
-            if(typeof optIndex !== 'undefined') {
+            if(optIndex !== undefined) {
                 cms[cmIndex].opts.splice(optIndex, 0, opt);
             } else {
                 cms[cmIndex].opts.push(opt);
             }
         },
         addMenuOptions: function(cmIndex, opts, optIndex) {
-            if(typeof optIndex !== 'undefined') {
-                cms[cmIndex].opts.splice(optIndex, 0, ...opts);
+            if(optIndex !== undefined) {
+                Array.prototype.splice.apply(cms[cmIndex].opts, [optIndex, 0].concat(opts));
             } else {
                 cms[cmIndex].opts = cms[cmIndex].opts.concat(opts);
             }
@@ -576,4 +595,4 @@ window.superCm = function() {
         }
     };
 
-}();
+}(navigator.appName == 'Microsoft Internet Explorer' || /Trident/.test(navigator.userAgent) || /rv:11/.test(navigator.userAgent));
