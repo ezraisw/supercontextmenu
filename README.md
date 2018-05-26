@@ -49,7 +49,7 @@ var options = [
 
 ### Option properties
 #### Icon
-The `icon` property can be used to specify an icon for the menu option. The property injects the property value as a class.
+The `icon` property can be used to specify an icon for the menu option. This property is injected as a class.
 
 #### Label
 Self-explanatory, the `label` property is the text displayed for the option.
