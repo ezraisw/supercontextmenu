@@ -147,9 +147,9 @@ $(document).on('contextmenu', function(e) {
 
 4. `superCm.getMenuOptions(contextMenuIndex)`
 
-5. `superCm.addMenuOption(contextMenuIndex, option, index = 0)`
+5. `superCm.addMenuOption(contextMenuIndex, option, [index])`
 
-6. `superCm.addMenuOptions(contextMenuIndex, options, index = 0)`
+6. `superCm.addMenuOptions(contextMenuIndex, options, [index])`
 
 7. `superCm.deleteMenuOption(contextMenuIndex, index)`
 
