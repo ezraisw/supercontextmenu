@@ -108,7 +108,7 @@ separator: true
 ```
 
 #### Custom properties
-You can also add your own properties to the option object. This allows data to be stored on each option and be obtained later either through the `option` parameter in the action callback or the `superCm.getMenuOptions` function.
+You can also add your own properties to the option object. This allows data to be stored on each option and be obtained later either through the `option` parameter in the action callback, the `this` keyword, or the `superCm.getMenuOptions` function.
 
 ```
 function process(option) {
