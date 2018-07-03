@@ -17,7 +17,7 @@ window.superCm = function(msie) {
 
     var cmTemplate = $('<div>').addClass('context-menu')
         .append(
-            $('<div>').addClass('context-menu-options')   
+            $('<div>').addClass('context-menu-options')
         );
 
     var cmOptTemplate = $('<div>');
@@ -30,7 +30,7 @@ window.superCm = function(msie) {
     var optIconTemplate = $('<i>').addClass('option-icon');
     var optTextTemplate = $('<span>').addClass('option-text');
     var optSeparatorTemplate = $('<hr>').addClass('option-separator');
-    
+
     var cms = [];
 
     var activeOpt = null;
@@ -40,7 +40,7 @@ window.superCm = function(msie) {
         var cm = cms[cmIndex];
         return cm.search.result && !actualOpts ? cm.search.result : cm.opts;
     }
-    
+
     function getOptContainer(cmIndex)
     {
         return cms[cmIndex].element.find('.context-menu-options');
@@ -90,7 +90,7 @@ window.superCm = function(msie) {
         if(activeSubmenu != optIndex) {
             if(activeSubmenu != -1) {
                 let cmOptElement = getOptElement(cmIndex, activeSubmenu);
-                
+
                 if(cmOptElement.hasClass('active-submenu')) {
                     cmOptElement.removeClass('active-submenu');
                 }
@@ -98,7 +98,7 @@ window.superCm = function(msie) {
 
             if(optIndex != -1) {
                 let cmOptElement = getOptElement(cmIndex, optIndex);
-                
+
                 if(!cmOptElement.hasClass('active-submenu')) {
                     cmOptElement.addClass('active-submenu');
                 }
@@ -128,7 +128,7 @@ window.superCm = function(msie) {
         var cm = cms[cmIndex];
 
         var opts = getOpts(cmIndex, false);
-        
+
         if(opts.length == 0) {
             opts = [
                 {
@@ -200,7 +200,7 @@ window.superCm = function(msie) {
                     opt.action(opt, cmIndex, optIndex);
                 });
             }
-            
+
             if(submenu) {
                 cmOptElement.on('submenu', function() {
                     if(cm.activeSubmenu == optIndex) {
@@ -241,7 +241,7 @@ window.superCm = function(msie) {
             cmOptElement.mouseleave(function() {
                 if(activeOpt.cmIndex == cmIndex && activeOpt.optIndex == optIndex) {
                     setCurrentActiveOver(-1, -1);
-                }   
+                }
             });
         });
 
@@ -350,8 +350,8 @@ window.superCm = function(msie) {
                     result.push(opt);
                     match = true;
                 }
-            } 
-            
+            }
+
             if(!match && opt.submenu !== undefined && opt.submenu.length) {
                 populateSearchResult(result, opt.submenu, keyword);
             }
@@ -375,7 +375,7 @@ window.superCm = function(msie) {
         setCurrentActiveOver(-1, -1);
 
         var result = [];
-        
+
         populateSearchResult(result, cm.opts, keyword.toLowerCase());
         cm.search.result = result;
     }
@@ -388,7 +388,7 @@ window.superCm = function(msie) {
             var cmSearch = cmSearchTemplate.clone();
             cmSearch.prependTo(cmElement);
         }
-        
+
         var cm = {
             'element': cmElement,
             'position': position,
@@ -447,7 +447,7 @@ window.superCm = function(msie) {
         var currentOptIndex = optIndex;
         while(!isSelectable(cmIndex, currentOptIndex)) {
             currentOptIndex += reverse ? -1 : 1;
-            
+
             if(currentOptIndex == optIndex) {
                 return -1;
             }
@@ -498,7 +498,7 @@ window.superCm = function(msie) {
         }
 
         var nextOptIndex = findSuitableSelectable(activeOpt.cmIndex, activeOpt.optIndex + 1, false);
-        
+
         if(nextOptIndex != -1) {
             setCurrentActiveOver(activeOpt.cmIndex, nextOptIndex);
         }
@@ -512,7 +512,7 @@ window.superCm = function(msie) {
         if(e.key == 'Escape' || e.which == 27) {
             destroyCm();
         }
-        
+
         if(cms.length > 0) {
             if(e.key == 'ArrowUp' || e.which == 38) {
                 e.preventDefault();
