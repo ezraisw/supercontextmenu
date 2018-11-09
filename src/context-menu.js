@@ -598,7 +598,10 @@ window.superCm = function(msie) {
         },
         setMenuOptions: function(cmIndex, opts) {
             cms[cmIndex].opts = opts;
-        }
+        },
+		isOpen: function() {
+			return $(".context-menu").length !== 0;
+		},
     };
 
 }(navigator.appName == 'Microsoft Internet Explorer' || /Trident/.test(navigator.userAgent) || /rv:11/.test(navigator.userAgent));
