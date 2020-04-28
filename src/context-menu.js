@@ -270,7 +270,7 @@ window.superCm = function(msie) {
 
             cm.position = {
                 'x': parentCm.position.x + parentCm.element.outerWidth(),
-                'y': parentCm.position.y + activeSubmenu[0].offsetTop - activeSubmenu[0].parentElement.scrollTop - parseInt(getOptContainer(cmIndex).css('padding-top'))
+                'y': parentCm.position.y + activeSubmenu[0].offsetTop - activeSubmenu[0].parentElement.scrollTop - parseInt(getOptContainer(parentCmIndex).css('padding-top'))
             };
         }
 
@@ -572,6 +572,11 @@ window.superCm = function(msie) {
                 updateCm(cmIndex);
                 updateCmPosition(cmIndex, repositionX, repositionY);
             });
+        },
+        updateMenuIndex: function(repositionX, repositionY,cmIndex) {
+            updateSearch(cmIndex);
+            updateCm(cmIndex);
+            updateCmPosition(cmIndex, repositionX, repositionY);
         },
         getMenuOptions: function(cmIndex) {
             return cms[cmIndex].opts;
