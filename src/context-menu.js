@@ -270,7 +270,7 @@ window.superCm = function(msie) {
 
             cm.position = {
                 'x': parentCm.position.x + parentCm.element.outerWidth(),
-                'y': parentCm.position.y + activeSubmenu[0].offsetTop - activeSubmenu[0].parentElement.scrollTop - parseInt(getOptContainer(parentCmIndex).css('padding-top'))
+                'y': parentCm.position.y + activeSubmenu[0].offsetTop - activeSubmenu[0].parentElement.scrollTop - parseInt(getOptContainer(cmIndex).css('padding-top'))
             };
         }
 
@@ -573,7 +573,7 @@ window.superCm = function(msie) {
                 updateCmPosition(cmIndex, repositionX, repositionY);
             });
         },
-        updateMenuIndex: function(repositionX, repositionY,cmIndex) {
+        updateMenuIndex: function(cmIndex, repositionX, repositionY) {
             updateSearch(cmIndex);
             updateCm(cmIndex);
             updateCmPosition(cmIndex, repositionX, repositionY);
@@ -604,9 +604,9 @@ window.superCm = function(msie) {
         setMenuOptions: function(cmIndex, opts) {
             cms[cmIndex].opts = opts;
         },
-		isOpen: function() {
-			return $(".context-menu").length !== 0;
-		},
+        isOpen: function() {
+            return $('.context-menu').length !== 0;
+        },
     };
 
 }(navigator.appName == 'Microsoft Internet Explorer' || /Trident/.test(navigator.userAgent) || /rv:11/.test(navigator.userAgent));
